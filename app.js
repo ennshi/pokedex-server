@@ -4,7 +4,7 @@ const { db } = require('./db/fireStore');
 
 const app = express();
 
-app.use(bodyParser);
+app.use(bodyParser.json());
 
 db && app.listen(process.env.PORT, () => {
     console.log('Server is up');
