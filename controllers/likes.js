@@ -28,3 +28,18 @@ exports.addToLikes = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.deleteFromLikes = async (req, res, next) => {
+    const pokemonId = req.body.pokemonId;
+    try {
+        const ref = collection.doc(pokemonId);
+        const pokemonData = await ref.get();
+        if(!pokemonData.exists) {
+            throw createError(404, 'No pokemon found');
+        }
+        await ref.delete();
+        res.status(200).json({ data: pokemonId });
+    } catch (error) {
+        next(error);
+    }
+};
