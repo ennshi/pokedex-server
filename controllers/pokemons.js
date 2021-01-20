@@ -7,7 +7,7 @@ const collection = db.collection('pokemons');
 exports.getAllPokemons = async (req, res, next) => {
     try {
         const pokemonsData = await collection.get();
-        const pokemons = filterSnapshotArrayFields(pokemonsData, ['id', 'name', 'img', 'type']);
+        const pokemons = pokemonsData.size ? filterSnapshotArrayFields(pokemonsData, ['id', 'name', 'img', 'type']) : [];
         res.status(200).json({ data: pokemons });
     } catch (error) {
         next(error);
