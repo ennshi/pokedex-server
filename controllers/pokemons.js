@@ -7,9 +7,6 @@ const collection = db.collection('pokemons');
 exports.getAllPokemons = async (req, res, next) => {
     try {
         const pokemonsData = await collection.get();
-        if(!pokemonsData.exists) {
-            throw createError(404, 'No pokemons found');
-        }
         const pokemons = filterSnapshotArrayFields(pokemonsData, ['id', 'name', 'img', 'type']);
         res.status(200).json({ data: pokemons });
     } catch (error) {
