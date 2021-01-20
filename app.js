@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { db } = require('./db/fireStore');
+const routes = require('./routes');
 
 const app = express();
 
@@ -12,6 +13,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
+
+app.use('/', routes);
 
 db && app.listen(process.env.PORT, () => {
     console.log('Server is up');
