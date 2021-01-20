@@ -13,3 +13,18 @@ exports.getAllLikes = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.addToLikes = async (req, res, next) => {
+    const pokemonId = req.body.pokemonId;
+    try {
+        const ref = db.collection('pokemons').doc(pokemonId);
+        const pokemonData = await ref.get();
+        if(!pokemonData.exists) {
+            throw createError(404, 'No pokemon found');
+        }
+        await collection.doc(pokemonId).set(pokemonData.data());
+        res.status(201).json({ data: pokemonId });
+    } catch (error) {
+        next(error);
+    }
+};
