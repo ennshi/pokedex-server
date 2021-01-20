@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { db } = require('./db/fireStore');
 const routes = require('./routes');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
@@ -15,6 +16,8 @@ app.use((req, res, next) => {
 });
 
 app.use('/', routes);
+
+app.use(errorHandler);
 
 db && app.listen(process.env.PORT, () => {
     console.log('Server is up');
