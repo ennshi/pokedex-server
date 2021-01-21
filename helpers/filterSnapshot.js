@@ -16,7 +16,17 @@ const filterSnapshotArrayFields = (snapshotArray, fields) => {
     return result;
 };
 
+const filterSnapshotArrayIds = (snapshotArray) => {
+    const result = [];
+    snapshotArray.forEach(item => {
+        const itemData = item.data();
+        result.push(itemData.id);
+    });
+    return result;
+};
+
 module.exports = {
     filterSnapshotArrayFields,
-    filterSnapshotFields
+    filterSnapshotFields,
+    filterSnapshotArrayIds
 };

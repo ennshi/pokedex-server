@@ -1,8 +1,18 @@
 const { db } = require('../db/fireStore');
-const { filterSnapshotArrayFields } = require('../helpers/filterSnapshot');
+const { filterSnapshotArrayFields, filterSnapshotArrayIds } = require('../helpers/filterSnapshot');
 const { createError } = require('../helpers/createError');
 
 const collection = db.collection('likes');
+
+exports.getAllLikeIds = async (req, res, next) => {
+    try {
+        const likesData = await collection.get();
+        const likes = likesData.size ? filterSnapshotArrayIds(likesData) : [];
+        res.status(200).json({ data: likes });
+    } catch (error) {
+        next(error);
+    }
+};
 
 exports.getAllLikes = async (req, res, next) => {
     try {
