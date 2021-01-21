@@ -1,9 +1,9 @@
 const express = require('express');
-const { getAllPokemons, getPokemon } = require('./controllers/pokemons');
+const { getPokemons, getPokemon } = require('./controllers/pokemons');
 const { getAllLikes, addToLikes, deleteFromLikes, getAllLikeIds } = require('./controllers/likes');
 const router = express.Router();
 
-router.get('/pokemons', getAllPokemons);
+router.get('/pokemons', getPokemons);
 
 router.get('/pokemon/:pokemonId', getPokemon);
 

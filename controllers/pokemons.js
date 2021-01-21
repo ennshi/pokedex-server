@@ -1,12 +1,16 @@
 const { db } = require('../db/fireStore');
 const { filterSnapshotArrayFields, filterSnapshotFields } = require('../helpers/filterSnapshot');
 const { createError } = require('../helpers/createError');
+const { parseFilter } = require('../helpers/parseQuery');
 
 const collection = db.collection('pokemons');
 
-exports.getAllPokemons = async (req, res, next) => {
+exports.getPokemons = async (req, res, next) => {
+    const filter = parseFilter(req.query.filter);
     try {
-        const pokemonsData = await collection.get();
+        const pokemonsData = filter ?
+            await collection.where(...filter).get() :
+            await collection.get();
         const pokemons = pokemonsData.size ? filterSnapshotArrayFields(pokemonsData, ['id', 'name', 'img', 'type']) : [];
         res.status(200).json({ data: pokemons });
     } catch (error) {
