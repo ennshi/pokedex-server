@@ -40,7 +40,7 @@ exports.addToLikes = async (req, res, next) => {
 };
 
 exports.deleteFromLikes = async (req, res, next) => {
-    const pokemonId = req.body.pokemonId;
+    const pokemonId = req.params.pokemonId;
     try {
         const ref = collection.doc(pokemonId);
         const pokemonData = await ref.get();
