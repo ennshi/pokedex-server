@@ -5,11 +5,8 @@ const { createError } = require('../helpers/createError');
 const collection = db.collection('likes');
 
 exports.getAllLikeIds = async (req, res, next) => {
-    const page = req.query.page || 1;
-    const limit = req.query.limit || 6;
-    const offset = limit * (page - 1);
     try {
-        const likesData = await collection.offset(offset).limit(limit).get();
+        const likesData = await collection.get();
         const likes = likesData.size ? filterSnapshotArrayIds(likesData) : [];
         res.status(200).json({ data: likes });
     } catch (error) {
@@ -18,8 +15,11 @@ exports.getAllLikeIds = async (req, res, next) => {
 };
 
 exports.getAllLikes = async (req, res, next) => {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 6;
+    const offset = limit * (page - 1);
     try {
-        const likesData = await collection.get();
+        const likesData = await collection.offset(offset).limit(limit).get();
         const likes = likesData.size ? filterSnapshotArrayFields(likesData, ['id', 'name', 'img', 'type']) : [];
         res.status(200).json({ data: likes });
     } catch (error) {
