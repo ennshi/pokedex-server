@@ -7,10 +7,14 @@ const collection = db.collection('pokemons');
 
 exports.getPokemons = async (req, res, next) => {
     const filter = parseFilter(req.query.filter);
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 6;
+    const offset = limit * (page - 1);
     try {
-        const pokemonsData = filter ?
-            await collection.where(...filter).get() :
-            await collection.get();
+        const pokemonsRef = filter ?
+            collection.where(...filter) :
+            collection;
+        const pokemonsData = await pokemonsRef.offset(offset).limit(limit).get();
         const pokemons = pokemonsData.size ? filterSnapshotArrayFields(pokemonsData, ['id', 'name', 'img', 'type']) : [];
         res.status(200).json({ data: pokemons });
     } catch (error) {
